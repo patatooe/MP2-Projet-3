@@ -2,6 +2,14 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+
+
+
+
+
+
+
 # Distribution de la température dans un appartement d'un immeuble aux plusieurs étages
 
 
