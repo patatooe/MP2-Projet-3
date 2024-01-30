@@ -32,7 +32,7 @@ h=20 #W/(m^2*K); Coefficient de transfert thermique sur les surfaces extérieure
 # Paramètres de l'air qui remplit l'appartement
 ka=0.024
 
-fact_ar = np.array([ 1.0, 0.5, 0.25, 0.125], dtype=np.double); # Matrice pleine
+fact_ar = np.array([ 1.0, 0.5], dtype=np.double); # Matrice pleine
 d_ar=np.zeros(fact_ar.size,dtype=np.double)
 tini_ar=np.zeros(fact_ar.size,dtype=np.double)
 tinv_ar=np.zeros(fact_ar.size,dtype=np.double)
@@ -95,7 +95,7 @@ for fact in fact_ar:
         for j in np.arange(1,Nx+1,1):
             # remplir la ligne pl de la matrice M
             pl=(i-1)*Nx+j
-            
+          
             if (((i>1) and (i<Ny)) and ((j>1) and (j<Nx))):
                 # noeud qui est strictement à l'intérieur de la cellule de simulation
                 pc=pl
@@ -113,9 +113,9 @@ for fact in fact_ar:
                 # noeud sur le plafond y=0
                 pc=pl
                 M[pl-1,pc-1]= 3+2*d*h/k[i-1,j-1]# contribution de noeud (1,j)
-                pc=(j-1)*Ny+i+(Nx)
+                pc=(j-1)*Ny+i+1
                 M[pl-1,pc-1]=-4 # contribution de noeud (Nx,j)
-                pc=(j-1)*Ny+i+(2*(Nx-1))
+                pc=(j-1)*Ny+i+2
                 M[pl-1,pc-1]=1 # contribution de noeud (2Nx,j)
                 b[pl-1]=2*d*h*Ta/k[i-1,j-1]
 
@@ -123,9 +123,9 @@ for fact in fact_ar:
                 # noeud sur le plancher y=Ly
                 pc=pl
                 M[pl-1,pc-1]= 3+2*d*h/k[i-1,j-1]# contribution de noeud (Nx,j)
-                pc=(j-1)*Ny+i-(Nx)
+                pc=(j-1)*Ny+i-1
                 M[pl-1,pc-1]=-4 # contribution de noeud (Nx,j)
-                pc=(j-1)*Ny+i-(2*(Nx))
+                pc=(j-1)*Ny+i-2
                 M[pl-1,pc-1]=1 # contribution de noeud (2Nx,j)
                 b[pl-1]=2*d*h*Ta/k[i-1,j-1]
 
