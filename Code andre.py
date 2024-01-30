@@ -113,12 +113,22 @@ for fact in fact_ar:
                 # noeud sur le plafond y=0
                 pc=pl
                 M[pl-1,pc-1]= 3+2*d*h/k[i-1,j-1]# contribution de noeud (1,j)
-                b[pl-1]=Tp
+                pc=(j-1)*Ny+i+(Nx)
+                M[pl-1,pc-1]=-4 # contribution de noeud (Nx,j)
+                pc=(j-1)*Ny+i+(2*(Nx-1))
+                M[pl-1,pc-1]=1 # contribution de noeud (2Nx,j)
+                b[pl-1]=2*d*h*Ta/k[i-1,j-1]
+
             elif (i==Ny):
                 # noeud sur le plancher y=Ly
                 pc=pl
-                M[pl-1,pc-1]= 3+2*d*h/k[i-1,j-1]# contribution de noeud (Ny,j)
-                b[pl-1]=Tp
+                M[pl-1,pc-1]= 3+2*d*h/k[i-1,j-1]# contribution de noeud (Nx,j)
+                pc=(j-1)*Ny+i-(Nx)
+                M[pl-1,pc-1]=-4 # contribution de noeud (Nx,j)
+                pc=(j-1)*Ny+i-(2*(Nx))
+                M[pl-1,pc-1]=1 # contribution de noeud (2Nx,j)
+                b[pl-1]=2*d*h*Ta/k[i-1,j-1]
+
             elif (j==1):
                 # noeud à la surface externe du mur x=0
                 pc=pl
@@ -137,6 +147,23 @@ for fact in fact_ar:
                 pc=(i-1)*Nx+j-2
                 M[pl-1,pc-1]=1 # contribution de noeud (i,Nx-2)
                 b[pl-1]=2*d*h*Ta/k[i-1,j-1]
+            elif (j*d == Lm or j*d == Ly-Lm):
+                pc=pl
+                M[pl-1,pc-1]=3 # contribution de noeud (i,1)
+                pc=(i-1)*Nx+j+1
+                M[pl-1,pc-1]=-4# contribution de noeud (i,2)
+                pc=(i-1)*Nx+j+2
+                M[pl-1,pc-1]=1 # contribution de noeud (i,3)
+                b[pl-1]= 0
+            elif (i*d == Lm or i*d == Ly-Lm):
+                pc=pl
+                M[pl-1,pc-1]= 3# contribution de noeud (1,j)
+                pc=(j-1)*Ny+i+1
+                M[pl-1,pc-1]=-4 # contribution de noeud (2,j)
+                pc=(j-1)*Ny+i+2
+                M[pl-1,pc-1]=1 # contribution de noeud (3,j)
+                b[pl-1]=0
+            
             else:
                 print('Erreur dans la définition de la matrice de coefficients')
                 
